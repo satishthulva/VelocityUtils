@@ -1,6 +1,7 @@
 package com.github.donotspampls.velocityutils;
 
 import java.io.File;
+import java.nio.file.Path;
 
 import org.slf4j.Logger;
 
@@ -10,9 +11,11 @@ import com.github.donotspampls.velocityutils.commands.ListCommand;
 import com.github.donotspampls.velocityutils.commands.SendCommand;
 import com.github.donotspampls.velocityutils.config.Configuration;
 import com.github.donotspampls.velocityutils.config.parser.ConfigurationProvider;
+import com.google.inject.Inject;
 import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
+import com.velocitypowered.api.plugin.annotation.DataDirectory;
 import com.velocitypowered.api.proxy.ProxyServer;
 
 @Plugin(id = "velocityutils", name = "VelocityUtils", version = "1.0.0",
@@ -24,10 +27,11 @@ public class VelocityUtils {
     private final Logger logger;
     private final File userConfigDirectory;
 
-    public VelocityUtils(ProxyServer server, Logger logger, File userConfigDirectory) {
+    @Inject
+    public VelocityUtils(ProxyServer server, Logger logger, @DataDirectory Path userConfigDirectory) {
         this.server = server;
         this.logger = logger;
-        this.userConfigDirectory = userConfigDirectory;
+        this.userConfigDirectory = new File(userConfigDirectory.toFile(),  "velocityutils");
     }
 
     @Subscribe
